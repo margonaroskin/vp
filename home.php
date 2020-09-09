@@ -18,6 +18,7 @@ $semesterduration = $semesterstart->diff($semesterend);
 $semesterdurationdays = $semesterduration->format("%r%a");
 //tänane päev
 $today = new DateTime();
+$fromsemesterstartdays = $semesterstart->diff($today)->format("%r%a")
 //if($fromsemesterstartdays < 0){semeser pole peale hakanud}
 ?>
 
@@ -30,6 +31,7 @@ $today = new DateTime();
 </head>
 <body>
 <h1><?php echo $username; ?></h1>
+<h1><?php echo $semesterdurationdays; ?></h1>
 <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
 <p>Leht on loodud veebiprogrammeerimise kursuse raames <a href="http://www.tlu.ee">Tallinna Ülikooli</a>
     Digitehnoloogiate instituudis.</p>
