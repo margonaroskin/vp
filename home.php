@@ -9,6 +9,16 @@ if ($hournow < 7) {
 if ($hournow >= 8 and $hournow < 18) {
     $partofday = "akadeemilise aktiivsuse aeg";
 }
+
+//vaatame semestri kulgemist
+$semesterstart = new DateTime("2020-8-31");
+$semesterend = new DateTime("2020-12-13");
+//selgitame välja nende vahe ehk erinevuse
+$semesterduration = $semesterstart->diff($semesterend);
+$semesterdurationdays = $semesterduration->format("%r%a");
+//tänane päev
+$today = new DateTime();
+//if($fromsemesterstartdays < 0){semeser pole peale hakanud}
 ?>
 
 <!DOCTYPE html>
