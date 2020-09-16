@@ -9,11 +9,17 @@ if ($hournow < 7) {
 if ($hournow >= 8 and $hournow < 16) {
     $partofday = "akadeemilise aktiivsuse aeg";
 }
-if ($hournow >= 16 and $hournow < 20) {
+if ($hournow >= 16 and $hournow < 18) {
+    $partofday = "trenni aeg";
+}	
+if ($hournow >= 18 and $hournow < 20) {
     $partofday = "vaba aeg";
 }
 if ($hournow >= 22 and $hournow < 23) {
     $partofday = "hügieen";
+}
+if ($hournow >= 23) {
+    $partofday = "magamaminek";
 }
 
 //vaatame semestri kulgemist
@@ -21,6 +27,7 @@ $semesterstart = new DateTime("2020-8-31");
 $semesterend = new DateTime("2020-12-13");
 //selgitame välja nende vahe ehk erinevuse
 $semesterduration = $semesterstart->diff($semesterend);
+//leiame päevade arvu
 $semesterdurationdays = $semesterduration->format("%r%a");
 //selgitame välja mitu protsenti semestrist on läbitud
 $today = new DateTime("now");
