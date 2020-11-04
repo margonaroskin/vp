@@ -85,14 +85,32 @@ $semesterend = new DateTime("2020-12-13");
 $semesterduration = $semesterstart->diff($semesterend);
 //leiame päevade arvu
 $semesterdurationdays = $semesterduration->format("%r%a");
-//selgitame välja mitu protsenti semestrist on läbitud
-$today = new DateTime("now");
-$semesterpassed = $semesterstart->diff($today)->format("%r%a");
-$semesterpercent = $semesterpassed * 100 / $semesterdurationdays;
+
 //tänane päev
 $today = new DateTime("now");
-$fromsemesterstartdays = $semesterstart->diff($today)->format("%r%a");
-//if($fromsemesterstartdays < 0){semeser pole peale hakanud}
+//if($fromsemesterstartdays < 0){semester pole peale hakanud}
+$fromsemesterstart = $semesterstart->diff($today);
+//saime aja erinevuse objektina, seda niisama näidata ei saa
+$fromsemesterstartdays = $fromsemesterstart->format("%r%a");
+$semesterpercentage = 0;
+
+$semesterinfo = "Semester kulgeb vastavalt akadeemilisele kalendrile.";
+if($semesterstart > $today){
+	  $semesterinfo = "Semester pole veel alanud.";
+}
+if($fromsemesterstartdays == 0){
+	  $semesterinfo = "Semester algab täna.";
+}
+if($fromsemesterstartdays > 0 and $fromsemesterstartdays < $semesterdurationdays){
+	  $semesterpercentage = ($fromsemesterstartdays / $semesterdurationdays) * 100;
+	  $semesterinfo = "Semester on hetkel käimas ning " .$fromsemesterstartdays ." päeva on juba läbitud, mis moodustab " .$semesterpercentage ."% tervest semestrist.";
+}
+if($fromsemesterstartdays == $semesterdurationdays){
+	  $semesterinfo = "Tänasega saab semester läbi.";
+}
+if($fromsemesterstartdays > $semesterdurationdays){
+	  $semesterinfo = "Semester on läbi.";
+}
 
 //loeme kataloogist piltide nimekrija
 $allfiles = scandir("../vp_pics/");
@@ -101,27 +119,26 @@ $allfiles = scandir("../vp_pics/");
 $pickfiles = array_slice($allfiles, 2);
 //var_dump($pickfiles);
 $imghtml = "";
-$pickcount = count($pickfiles);
+$piccount = count($pickfiles);
 //$i = $i +1;
 //$i ++;
 //$i += 3;
-for($i = 0;$i < $pickcount; $i ++){
+//for($i = 0;$i < $pickcount; $i ++){
 	//<img src="../img/pildifail" alt="tekst">
-	$imghtml .= '<img src="../vp_pics/' .$pickfiles[$i] .'" alt="Tallinna Ülikool">';
-}
+	//$imghtml .= '<img src="../vp_pics/' .$pickfiles[$i] .'" alt="Tallinna Ülikool">';
+//}
+//$randompicnum = mt_rand (0, ($pickcount - 1));
+ $imghtml = '<img src="../vp_pics/' .$picfiles[mt_rand(0,($piccount - 1))] .'" alt="Tallinna Ülikool">';
 require("header.php");
 ?>
 
 <img src="../img/vp_banner.png" alt="Veebiprogrammerimise kursue logo">
 <h1><?php echo $username; ?></h1>
 <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
-<p>Leht on loodud veebiprogrammeerimise kursuse raames <a href="http://www.tlu.ee">Tallinna Ülikooli</a>
-    Digitehnoloogiate instituudis.</p>
+<p>Leht on loodud veebiprogrammeerimise kursuse raames <a href="http://www.tlu.ee">Tallinna Ülikooli</a> Digitehnoloogiate instituudis.</p>
 <p>Lehe avamise hetkel oli: <?php echo $weekdaynameset[$weekdaynow - 1] .", " .$fulltimenow; ?>.</p>
 <p><?php echo "Parajasti on " .$partofday . ".";?></p>
-<p><?php echo "Semestri pikkus on " .$semesterdurationdays . " päeva.";?></p>
-<p><?php echo "Semestri algusest on möödunud " .$fromsemesterstartdays . " päeva.";?></p>
-<p><?php echo "Semestrist on läbitud " .$semesterpercent . "%";?></p>
+<p><?php echo $semesterinfo; ?></p>
 <hr>
 <?php echo $imghtml; ?>
 <hr>
